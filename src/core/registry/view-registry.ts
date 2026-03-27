@@ -1,6 +1,8 @@
-import AssetExplorerIndex from "@/features/asset-explorer";
-import HomeMapIndex from "@/features/home-map";
-import TaskExplorerIndex from "@/features/task-explorer";
+import AnalogIndex from "@/features/analog";
+import DigitalIndex from "@/features/digital";
+import EventIndex from "@/features/event";
+import HarmonicsIndex from "@/features/harmonics";
+import PhasorIndex from "@/features/phasor";
 import { IDockviewPanelProps } from "dockview";
 
 export interface ViewMetadata {
@@ -12,21 +14,31 @@ export interface ViewMetadata {
 }
 
 export const VIEW_REGISTRY: Record<string, ViewMetadata> = {
-    HOME_MAP: {
-        id: "home-map",
-        title: "Home Map",
-        component: HomeMapIndex,
+    EVENT: {
+        id: "event",
+        title: "Event View",
+        component: EventIndex,
     },
-    ASSET_EXPLORER: {
-        id: "asset-explorer",
-        title: "Asset Explorer",
-        component: AssetExplorerIndex,
+    ANALOG: {
+        id: "analog",
+        title: "Analog View",
+        component: AnalogIndex,
     },
-    TASK_EXPLORER: {
-        id: "task-explorer",
-        title: "Task Explorer",
-        component: TaskExplorerIndex,
+    DIGITAL: {
+        id: "digital",
+        title: "Digital View",
+        component: DigitalIndex,
     },
+    PHASOR: {
+        id: "phasor",
+        title: "Phasor View",
+        component: PhasorIndex,
+    },
+    HARMONICS: {
+        id: "harmonics",
+        title: "Harmonics View",
+        component: HarmonicsIndex
+    }
 };
 
 export type ViewType = keyof typeof VIEW_REGISTRY;

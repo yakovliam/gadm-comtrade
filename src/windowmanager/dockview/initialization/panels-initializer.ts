@@ -8,20 +8,16 @@ import { v7 as uuidv7 } from 'uuid';
  * but in the future it will be more dynamic and based on user settings.
  */
 const initializePanels = (addPanel: (options: AddPanelOptions<Parameters>) => IDockviewPanel) => {
-    // addPanel({
-    //     id: generateRandomId(), component: 'default', params: { viewType: DEFAULT_VIEW_TYPE }
-    // });
-
     addPanel({
-        id: generateRandomId(), component: 'default', params: { viewType: "ASSET_EXPLORER" }
+        id: generateRandomId(), component: 'default', params: { viewType: "EVENT" }
     });
 
     addPanel({
-        id: generateRandomId(), component: 'default', params: { viewType: "TASK_EXPLORER" }
+        id: generateRandomId(), component: 'default', params: { viewType: "ANALOG" }
     });
 
     addPanel({
-        id: generateRandomId(), component: 'default', params: { viewType: "WORKSPACE_EXPLORER" }
+        id: generateRandomId(), component: 'default', params: { viewType: "DIGITAL" }
     });
 };
 
