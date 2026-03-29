@@ -1,4 +1,4 @@
-import DigitalChannelInfo from "../../../../types/data/comtrade/config/digital-channel-info";
+import DigitalChannelInfo from "@/lib/comtrade/config/digital-channel-info";
 
 const parseDigitalChannelsContentToDigitalChannels = (
     digitalChannelLines: Array<Array<string>>

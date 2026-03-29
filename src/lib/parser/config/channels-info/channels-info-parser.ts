@@ -1,4 +1,4 @@
-import ChannelsInfo from "../../../../types/data/comtrade/config/channels-info";
+import ChannelsInfo from "@/lib/comtrade/config/channels-info";
 
 const parseChannelsInfoContentToChannelsInfo = (
   channelsInfoData: Array<string>

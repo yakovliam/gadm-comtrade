@@ -1,4 +1,4 @@
-import AnalogChannelInfo from "../../../../types/data/comtrade/config/analog-channel-info";
+import AnalogChannelInfo from "@/lib/comtrade/config/analog-channel-info";
 
 const parseAnalogChannelsContentToAnalogChannels = (
     analogChannelLines: Array<Array<string>>

@@ -2,11 +2,11 @@ import { ParseResult, parse } from "papaparse";
 import parseAnalogChannelsContentToAnalogChannels from "./analog/analog-channels-parser";
 import parseChannelsInfoContentToChannelsInfo from "./channels-info/channels-info-parser";
 import parseDigitalChannelsContentToDigitalChannels from "./digital/digital-channels-parser";
-import AnalogChannelInfo from "../../../types/data/comtrade/config/analog-channel-info";
-import ChannelsInfo from "../../../types/data/comtrade/config/channels-info";
-import Config, { DataFileType } from "../../../types/data/comtrade/config/config";
-import DigitalChannelInfo from "../../../types/data/comtrade/config/digital-channel-info";
-import samplingRate from "../../../types/data/comtrade/samp/sampling-rate";
+import AnalogChannelInfo from "@/lib/comtrade/config/analog-channel-info";
+import ChannelsInfo from "@/lib/comtrade/config/channels-info";
+import Config, { DataFileType } from "@/lib/comtrade/config/config";
+import DigitalChannelInfo from "@/lib/comtrade/config/digital-channel-info";
+import SamplingRate from "@/lib/comtrade/config/sampling-rate";
 
 const convertToDate = (dateString: string): Date => {
     // dd/mm/yyyy,hh:mm:ss.ssssss
@@ -102,7 +102,7 @@ const parseConfigContentsToConfig = (configContents: string): Config => {
     const lineFrequency: number = parseFloat(data[currentLine][0]);
 
     const nRates: number = parseInt(data[++currentLine][0]);
-    const samplingRates: Array<samplingRate> = [];
+    const samplingRates: Array<SamplingRate> = [];
     for (let i = 0; i < nRates; i++) {
         const sampleRate: number = parseFloat(data[++currentLine][0]);
         const lastSampleIdx: number = parseInt(data[currentLine][1]);

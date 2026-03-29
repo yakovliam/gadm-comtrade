@@ -1,11 +1,10 @@
+import AnalogChannel from "@/lib/comtrade/channel/analog/analog-channel";
+import DigitalChannel from "@/lib/comtrade/channel/digital/digital-channel";
+import TimestampedValue from "@/lib/comtrade/channel/timestamped-value";
+import AnalogChannelInfo from "@/lib/comtrade/config/analog-channel-info";
+import Config, { DataFileType } from "@/lib/comtrade/config/config";
+import DigitalChannelInfo from "@/lib/comtrade/config/digital-channel-info";
 import * as papa from "papaparse";
-import { ParseResult } from "papaparse";
-import AnalogChannel from "../../../types/data/comtrade/channel/analog/analog-channel";
-import DigitalChannel from "../../../types/data/comtrade/channel/digital/digital-channel";
-import TimestampedValue from "../../../types/data/comtrade/channel/timestamped-value";
-import AnalogChannelInfo from "../../../types/data/comtrade/config/analog-channel-info";
-import Config, { DataFileType } from "../../../types/data/comtrade/config/config";
-import DigitalChannelInfo from "../../../types/data/comtrade/config/digital-channel-info";
 
 interface ParseChannelsReturnType {
     analogChannels: AnalogChannel[];
@@ -115,7 +114,7 @@ const parseBinaryChannels = (
         for (let i = 0; i < config.analogChannelInfo.length; i++) {
             const value: number =
                 parseAnalogChannelValue(config.dataFileType, dataView, bytesRead) *
-                    config.analogChannelInfo[i].multiplier +
+                config.analogChannelInfo[i].multiplier +
                 Number(config.analogChannelInfo[i].offset);
             analogChannels[i].values.push({
                 timestamp: timeStamp,
@@ -191,8 +190,8 @@ const parseChannels = (
 ): ParseChannelsReturnType => {
     if (
         config.dataFileType === DataFileType.BINARY ||
-        config.dataFileType === DataFileType.BINARY32  ||
-        config.dataFileType === DataFileType.FLOAT32 
+        config.dataFileType === DataFileType.BINARY32 ||
+        config.dataFileType === DataFileType.FLOAT32
     ) {
         return parseBinaryChannels(config, dataContents as ArrayBuffer);
     }
@@ -212,7 +211,7 @@ const parseChannels = (
         let decoder = new TextDecoder("utf-8");
         dataContents = decoder.decode(dataContents);
     }
-    const jsonData: ParseResult<Array<string>> = papa.parse(dataContents);
+    const jsonData: papa.ParseResult<Array<string>> = papa.parse(dataContents);
 
     let { data } = jsonData;
 
@@ -248,9 +247,9 @@ const parseChannels = (
             .map((value, index) => {
                 const valuePair: TimestampedValue = {
                     timestamp: timestamps[index],
-                    value: (parseFloat(value)*
-                            config.analogChannelInfo[i].multiplier) +
-                           Number(config.analogChannelInfo[i].offset),
+                    value: (parseFloat(value) *
+                        config.analogChannelInfo[i].multiplier) +
+                        Number(config.analogChannelInfo[i].offset),
                 };
                 return valuePair;
             });
