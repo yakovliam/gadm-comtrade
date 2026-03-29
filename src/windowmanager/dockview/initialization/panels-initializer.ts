@@ -1,28 +1,59 @@
 import { DEFAULT_VIEW_TYPE } from "@/core/registry/view-constants";
 import { AddPanelOptions, IDockviewPanel, Parameters } from "dockview";
-import { v7 as uuidv7 } from 'uuid';
+import { v7 as uuidv7 } from "uuid";
 
 /**
- * This file is responsible for initializing the panels in the dockview. 
- * For now, it just initializes a single panel with the default view type, 
+ * This file is responsible for initializing the panels in the dockview.
+ * For now, it just initializes a single panel with the default view type,
  * but in the future it will be more dynamic and based on user settings.
  */
-const initializePanels = (addPanel: (options: AddPanelOptions<Parameters>) => IDockviewPanel) => {
-    addPanel({
-        id: generateRandomId(), component: 'default', params: { viewType: "EVENT" }
-    });
+const initializePanels = (
+  addPanel: (options: AddPanelOptions<Parameters>) => IDockviewPanel,
+) => {
+  const analog1 = addPanel({
+    id: generateRandomId(),
+    component: "default",
+    params: { viewType: "ANALOG" },
+    tabComponent: "default",
+  });
 
-    addPanel({
-        id: generateRandomId(), component: 'default', params: { viewType: "ANALOG" }
-    });
+  const event = addPanel({
+    id: generateRandomId(),
+    component: "default",
+    params: { viewType: DEFAULT_VIEW_TYPE },
+    tabComponent: "default",
+    position: {
+      referencePanel: analog1,
+      direction: "right",
+    },
+    initialWidth: 300,
+  });
 
-    addPanel({
-        id: generateRandomId(), component: 'default', params: { viewType: "DIGITAL" }
-    });
+  const analog2 = addPanel({
+    id: generateRandomId(),
+    component: "default",
+    params: { viewType: "ANALOG" },
+    tabComponent: "default",
+    position: {
+      referencePanel: analog1,
+      direction: "below",
+    },
+  });
+
+  const digital1 = addPanel({
+    id: generateRandomId(),
+    component: "default",
+    params: { viewType: "DIGITAL" },
+    tabComponent: "default",
+    position: {
+      referencePanel: analog2,
+      direction: "below",
+    },
+  });
 };
 
 const generateRandomId = (): string => {
-    return uuidv7();
-}
+  return uuidv7();
+};
 
 export default initializePanels;

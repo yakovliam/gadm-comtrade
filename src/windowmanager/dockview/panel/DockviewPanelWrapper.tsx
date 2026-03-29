@@ -11,8 +11,8 @@ const DockviewPanelWrapper: React.FC<IDockviewPanelProps<{ viewType: ViewType }>
         return !viewType ? <NoViewTypeProvided /> : <ViewNotFound viewType={viewType} />;
     }
 
-    const defaultTitle = viewMetadata.title || DEFAULT_TITLE;
-    props.api.setTitle(defaultTitle);
+    // const defaultTitle = viewMetadata.title || DEFAULT_TITLE;
+    // props.api.setTitle(defaultTitle);
 
     const Component = viewMetadata.component;
 
