@@ -5,27 +5,27 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-text-xhigh font-[500] text-[0.875rem] leading-[1.25rem] font-[Inter,sans-serif] transition-all disabled:pointer-events-none disabled:bg-state-disabled disabled:border-state-disabled-border disabled:text-text-disabled [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none cursor-pointer",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
+          "bg-button-primary border border-button-primary-border hover:bg-button-primary-hover active:bg-button-primary-pressed",
         destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
-        outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "bg-[var(--color-red3)] border border-transparent text-white hover:bg-[var(--color-red4)] active:bg-[var(--color-red5)]",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+          "bg-button-secondary border border-button-secondary-border hover:bg-button-secondary-hover active:bg-button-secondary-pressed",
+        outline:
+          "bg-button-tertiary border border-button-tertiary-border hover:bg-button-tertiary-hover active:bg-button-tertiary-pressed",
         ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-transparent border border-transparent hover:bg-button-tertiary-hover active:bg-button-tertiary-pressed",
+        link: "bg-transparent border-none text-hyperlink underline-offset-4 hover:underline hover:text-hyperlink-hover active:text-hyperlink-pressed",
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-        icon: "size-9",
+        default: "h-[var(--element-height)] px-4 py-0",
+        sm: "h-[calc(var(--element-height)*0.85)] px-3 gap-1.5",
+        lg: "h-[calc(var(--element-height)*1.15)] px-6",
+        icon: "h-[var(--element-height)] w-[var(--element-height)]",
       },
     },
     defaultVariants: {

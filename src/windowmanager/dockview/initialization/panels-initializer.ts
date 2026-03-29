@@ -26,7 +26,7 @@ const initializePanels = (
       referencePanel: analog1,
       direction: "right",
     },
-    initialWidth: 300,
+    initialWidth: 400,
   });
 
   const analog2 = addPanel({
