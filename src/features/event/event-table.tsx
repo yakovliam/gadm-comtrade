@@ -36,82 +36,101 @@ const EventTable = () => {
   const deleteEvent = useEventStore((state) => state.deleteEvent);
   const events = useEventStore((state) => state.events);
 
-  const tableData = useMemo(() => events.map((event) => ({
-    id: event.id,
-    stationName: event.config.stationName,
-    recordingDeviceId: event.config.recordingDeviceId,
-    revisionYear: event.config.revisionYear,
-    lineFrequency: event.config.lineFrequency,
-    firstDataPointDateTime: event.config.firstDataPointDateTime,
-    triggerDataPointDateTime: event.config.triggerDataPointDateTime,
-    analogChannelCount: event.config.channelsInfo.analogChannels,
-    digitalChannelCount: event.config.channelsInfo.digitalChannels,
-  })), [events]);
+  const tableData = useMemo(
+    () =>
+      events.map((event) => ({
+        id: event.id,
+        stationName: event.config.stationName,
+        recordingDeviceId: event.config.recordingDeviceId,
+        revisionYear: event.config.revisionYear,
+        lineFrequency: event.config.lineFrequency,
+        firstDataPointDateTime: event.config.firstDataPointDateTime,
+        triggerDataPointDateTime: event.config.triggerDataPointDateTime,
+        analogChannelCount: event.config.channelsInfo.analogChannels,
+        digitalChannelCount: event.config.channelsInfo.digitalChannels,
+      })),
+    [events],
+  );
 
-  const columns = useMemo<ColumnDef<Event>[]>(() => [
-    //   {
-    //     accessorKey: "id",
-    //     header: "ID",
-    //     cell: ({ row }) => (
-    //       <div className="font-mono text-xs text-muted-foreground">{row.getValue("id")}</div>
-    //     ),
-    //   },
-    {
-      accessorKey: "stationName",
-      header: "Station",
-    },
-    //   {
-    //     accessorKey: "recordingDeviceId",
-    //     header: "Recording Device",
-    //   },
-    {
-      accessorKey: "revisionYear",
-      header: "Rev.",
-    },
-    {
-      accessorKey: "lineFrequency",
-      header: "Freq (Hz)",
-      cell: ({ row }) => <span>{row.getValue("lineFrequency")} Hz</span>,
-    },
-    //   {
-    //     accessorKey: "firstDataPointDateTime",
-    //     header: "First Data Point",
-    //     cell: ({ row }) => <span>{formatDate(row.getValue("firstDataPointDateTime"))}</span>,
-    //   },
-    //   {
-    //     accessorKey: "triggerDataPointDateTime",
-    //     header: "Trigger Time",
-    //     cell: ({ row }) => <span>{formatDate(row.getValue("triggerDataPointDateTime"))}</span>,
-    //   },
-    {
-      accessorKey: "analogChannelCount",
-      header: "An",
-      cell: ({ row }) => <span>{row.getValue("analogChannelCount")}</span>,
-    },
-    {
-      accessorKey: "digitalChannelCount",
-      header: "Dn",
-      cell: ({ row }) => <span>{row.getValue("digitalChannelCount")}</span>,
-    },
-    {
-      id: "actions",
-      header: "Actions",
-      cell: ({ row }) => {
-        const eventId = row.original.id;
-
-        return (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => deleteEvent(eventId)}
-            className="text-red-500 hover:text-red-600 hover:bg-red-50"
-          >
-            Delete
-          </Button>
-        );
+  const columns = useMemo<ColumnDef<Event>[]>(
+    () => [
+      //   {
+      //     accessorKey: "id",
+      //     header: "ID",
+      //     cell: ({ row }) => (
+      //       <div className="font-mono text-xs text-muted-foreground">{row.getValue("id")}</div>
+      //     ),
+      //   },
+      {
+        accessorKey: "stationName",
+        header: "Station",
+        cell: ({ row }) => (
+          <span className="w-full flex">{row.getValue("stationName")}</span>
+        ),
       },
-    },
-  ], [deleteEvent]);
+      //   {
+      //     accessorKey: "recordingDeviceId",
+      //     header: "Recording Device",
+      //   },
+      {
+        accessorKey: "revisionYear",
+        header: "Rev.",
+        cell: ({ row }) => (
+          <span className="w-full flex">{row.getValue("revisionYear")}</span>
+        ),
+      },
+      {
+        accessorKey: "lineFrequency",
+        header: "Freq (Hz)",
+        cell: ({ row }) => (
+          <span className="w-full flex">
+            {row.getValue("lineFrequency")} Hz
+          </span>
+        ),
+      },
+      //   {
+      //     accessorKey: "firstDataPointDateTime",
+      //     header: "First Data Point",
+      //     cell: ({ row }) => <span>{formatDate(row.getValue("firstDataPointDateTime"))}</span>,
+      //   },
+      //   {
+      //     accessorKey: "triggerDataPointDateTime",
+      //     header: "Trigger Time",
+      //     cell: ({ row }) => <span>{formatDate(row.getValue("triggerDataPointDateTime"))}</span>,
+      //   },
+      // {
+      //   accessorKey: "analogChannelCount",
+      //   header: "A_n",
+      //   cell: ({ row }) => <span>{row.getValue("analogChannelCount")}</span>,
+      // },
+      // {
+      //   accessorKey: "digitalChannelCount",
+      //   header: "D_n",
+      //   cell: ({ row }) => <span>{row.getValue("digitalChannelCount")}</span>,
+      // },
+      {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => {
+          const eventId = row.original.id;
+
+          return (
+            <div className="flex items-start gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => deleteEvent(eventId)}
+                className="text-red-500 hover:text-red-600 hover:bg-red-50"
+              >
+                Delete
+              </Button>
+            </div>
+          );
+        },
+      },
+    ],
+    [deleteEvent],
+  );
 
   const table = useReactTable({
     data: tableData,

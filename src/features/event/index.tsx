@@ -22,7 +22,7 @@ const EventIndex = () => {
       <Button
         variant="default"
         size="lg"
-        className="w-full max-w-md"
+        className="w-full"
         onClick={openFilePicker}
       >
         <FileUpIcon />
