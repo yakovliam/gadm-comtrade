@@ -15,6 +15,7 @@ import {
 import useEventStore from "@/core/store/useEventStore";
 import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
+import { SettingsIcon, TrashIcon } from "lucide-react";
 
 type Event = {
   id: string;
@@ -116,13 +117,16 @@ const EventTable = () => {
 
           return (
             <div className="flex items-start gap-2">
+              <Button variant="outline" size="icon">
+                <SettingsIcon />
+              </Button>
               <Button
                 variant="outline"
-                size="sm"
+                size="icon"
                 onClick={() => deleteEvent(eventId)}
-                className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                className="text-red-500 hover:text-red-600 hover:bg-red-50 uppercase"
               >
-                Delete
+                <TrashIcon />
               </Button>
             </div>
           );
@@ -145,7 +149,7 @@ const EventTable = () => {
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead key={header.id} className="text-xs uppercase">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -165,7 +169,7 @@ const EventTable = () => {
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="text-xs">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

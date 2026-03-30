@@ -6,7 +6,7 @@ import { BinaryIcon } from "lucide-react";
 const DigitalTab = (
   props: IDockviewPanelHeaderProps<{ viewType: ViewType }>,
 ) => {
-  return <DefaultTab title="Digital" icon={BinaryIcon} {...props} />;
+  return <DefaultTab title="Digital Chart" icon={BinaryIcon} {...props} />;
 };
 
 export default DigitalTab;

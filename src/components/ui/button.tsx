@@ -23,6 +23,8 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-[var(--element-height)] px-4 py-0",
+        xxs: "h-[calc(var(--element-height)*0.625)] px-1 gap-0.5",
+        xs: "h-[calc(var(--element-height)*0.75)] px-2 gap-1",
         sm: "h-[calc(var(--element-height)*0.85)] px-3 gap-1.5",
         lg: "h-[calc(var(--element-height)*1.15)] px-6",
         icon: "h-[var(--element-height)] w-[var(--element-height)]",

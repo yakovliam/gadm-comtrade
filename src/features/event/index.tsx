@@ -9,7 +9,7 @@ const EventIndex = () => {
   const { inputRef, openFilePicker, handleFileChange } = useUploadCff();
 
   return (
-    <div className="flex flex-col items-center justify-start p-4 h-full text-white text-center gap-2">
+    <div className="flex flex-col items-center justify-start h-full text-white text-center">
       <input
         ref={inputRef}
         type="file"
@@ -19,15 +19,17 @@ const EventIndex = () => {
       />
 
       {/* Import Button */}
-      <Button
-        variant="default"
-        size="lg"
-        className="w-full"
-        onClick={openFilePicker}
-      >
-        <FileUpIcon />
-        Import Event
-      </Button>
+      <div className="w-full p-4">
+        <Button
+          variant="default"
+          size="lg"
+          className="w-full uppercase font-mono"
+          onClick={openFilePicker}
+        >
+          <FileUpIcon />
+          Import Event
+        </Button>
+      </div>
 
       {/* Table of Events */}
       {events.length > 0 && <EventTable />}

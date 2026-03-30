@@ -6,7 +6,7 @@ import { AudioLinesIcon } from "lucide-react";
 const AnalogTab = (
   props: IDockviewPanelHeaderProps<{ viewType: ViewType }>,
 ) => {
-  return <DefaultTab title="Analog" icon={AudioLinesIcon} {...props} />;
+  return <DefaultTab title="Analog Chart" icon={AudioLinesIcon} {...props} />;
 };
 
 export default AnalogTab;
