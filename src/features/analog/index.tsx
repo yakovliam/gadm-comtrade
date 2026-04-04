@@ -1,48 +1,114 @@
+import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { DatabaseIcon, Settings2Icon, SettingsIcon } from "lucide-react";
-import ResizableAnalogViewer from "./test-chart";
+import { DatabaseIcon, Settings2Icon } from "lucide-react";
+import { AnalogChart, type AnalogChannel } from "./chart";
 
-/**
- * Generates synthetic 3-phase sine wave data.
- * @param sampleRate - Samples per second (e.g., 9600 for high-res COMTRADE)
- * @param durationSeconds - Length of the "recording"
- * @param frequency - Grid frequency (50Hz or 60Hz)
- */
-export const generateSineTestData = (
-  sampleRate: number = 9600,
-  durationSeconds: number = 1,
-  frequency: number = 60,
-): Float32Array => {
+function generateSineData(
+  sampleRate: number,
+  durationSeconds: number,
+  frequency: number,
+  amplitude: number,
+  phase: number,
+): Float32Array {
   const totalSamples = sampleRate * durationSeconds;
   const data = new Float32Array(totalSamples);
-
-  // Angular frequency: 2 * PI * f
   const omega = 2 * Math.PI * frequency;
 
   for (let i = 0; i < totalSamples; i++) {
     const t = i / sampleRate;
-    // Standard Sine: A * sin(ωt + phase)
-    // We'll add some "noise" to make it look like a real analog signal
     const noise = (Math.random() - 0.5) * 0.02;
-    data[i] = Math.sin(omega * t) + noise;
+    data[i] = amplitude * Math.sin(omega * t + phase) + noise;
   }
 
   return data;
-};
+}
+
+function useTestChannels(): AnalogChannel[] {
+  return useMemo(() => {
+    const sampleRate = 9600;
+    const duration = 1;
+    const freq = 60;
+
+    return [
+      {
+        label: "IA",
+        unit: "Amps",
+        sampleRate,
+        data: generateSineData(sampleRate, duration, freq, 500, 0),
+        color: "var(--color-chart-blue1)",
+      },
+      {
+        label: "IB",
+        unit: "Amps",
+        sampleRate,
+        data: generateSineData(
+          sampleRate,
+          duration,
+          freq,
+          500,
+          (-2 * Math.PI) / 3,
+        ),
+        color: "var(--color-chart-red1)",
+      },
+      {
+        label: "IC",
+        unit: "Amps",
+        sampleRate,
+        data: generateSineData(
+          sampleRate,
+          duration,
+          freq,
+          500,
+          (2 * Math.PI) / 3,
+        ),
+        color: "var(--color-chart-green1)",
+      },
+      // {
+      //   label: "VA",
+      //   unit: "Volts",
+      //   sampleRate,
+      //   data: generateSineData(sampleRate, duration, freq, 70000, 0),
+      //   color: "var(--color-chart-yellow1)",
+      // },
+      // {
+      //   label: "VB",
+      //   unit: "Volts",
+      //   sampleRate,
+      //   data: generateSineData(
+      //     sampleRate,
+      //     duration,
+      //     freq,
+      //     70000,
+      //     (-2 * Math.PI) / 3,
+      //   ),
+      //   color: "var(--color-chart-orange1)",
+      // },
+      // {
+      //   label: "VC",
+      //   unit: "Volts",
+      //   sampleRate,
+      //   data: generateSineData(
+      //     sampleRate,
+      //     duration,
+      //     freq,
+      //     70000,
+      //     (2 * Math.PI) / 3,
+      //   ),
+      //   color: "var(--color-chart-violet1)",
+      // },
+    ];
+  }, []);
+}
 
 const AnalogIndex = () => {
-  // TODO: Determination:
-  //       Use visx for defining axis, labels, grid, etc...
-  //       Use webgl-plot for the actual waveform rendering (since it can handle large datasets at high performance)
-  //       Possibly research using regl directly for even more control and performance, but that would require building more of the charting infrastructure ourselves.
+  const channels = useTestChannels();
+
   return (
-    <div className="flex flex-col items-center justify-center h-full text-white text-center relative">
+    <div className="flex flex-col h-full text-white relative">
       <ControlsOverlay />
-      <div className="flex-1 w-full">
-        {/* <ResizableAnalogViewer data={generateSineTestData()} /> */}
+      <div className="flex-1 w-full min-h-0">
+        <AnalogChart channels={channels} />
       </div>
-      {/* <h1>Analog Index</h1> */}
-      {/* <p>This is an empty analog page.</p> */}
     </div>
   );
 };
@@ -50,11 +116,11 @@ const AnalogIndex = () => {
 const ControlsOverlay = () => {
   return (
     <div className="absolute top-2 right-2 z-50">
-      <Button variant="outline" size="xs">
+      <Button variant="secondary" size="xs">
         <DatabaseIcon />
         <span className="text-xs font-mono">SOURCES</span>
       </Button>
-      <Button variant="outline" size="xs" className="ml-2">
+      <Button variant="secondary" size="xs" className="ml-2">
         <Settings2Icon />
         <span className="text-xs font-mono">OPTIONS</span>
       </Button>
