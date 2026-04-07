@@ -133,10 +133,15 @@ function useSharedHorizontalZoom(fullDomain: [number, number]) {
   });
 
   const zoomRef = useRef(zoom);
-  zoomRef.current = zoom;
-
   const fullRef = useRef(fullDomain);
-  fullRef.current = fullDomain;
+
+  useEffect(() => {
+    zoomRef.current = zoom;
+  }, [zoom]);
+
+  useEffect(() => {
+    fullRef.current = fullDomain;
+  }, [fullDomain]);
 
   const resetZoom = useCallback(() => {
     setZoom({ xMin: fullRef.current[0], xMax: fullRef.current[1] });
@@ -291,6 +296,7 @@ interface ChartPanelProps {
   chartWidth: number;
   chartHeight: number;
   xScale: (v: number) => number;
+  xScaleObj: ReturnType<typeof scaleLinear<number>>;
   zoom: ZoomState;
   onZoomWheel: (deltaY: number, cursorFrac: number) => void;
   onMouseDown: (e: MouseEvent) => void;
@@ -304,6 +310,7 @@ function ChartPanel({
   chartWidth,
   chartHeight,
   xScale,
+  xScaleObj,
   zoom,
   onZoomWheel,
   onMouseDown,
@@ -436,14 +443,14 @@ function ChartPanel({
       <div style={{ height: AXIS_HEIGHT, flexShrink: 0 }}>
         <svg width={chartWidth} height={AXIS_HEIGHT}>
           <GridColumns
-            scale={xScale}
+            scale={xScaleObj}
             height={AXIS_HEIGHT}
             stroke={GRID_STROKE}
             strokeWidth={1}
             numTicks={Math.max(4, Math.floor(chartWidth / 100))}
           />
           <AxisBottom
-            scale={xScale}
+            scale={xScaleObj}
             top={0}
             numTicks={Math.max(4, Math.floor(chartWidth / 100))}
             tickFormat={(v) => formatXTick(v as number)}
@@ -477,7 +484,7 @@ function InnerDigitalChart({
   const { zoom, resetZoom, handleWheel, panTo } =
     useSharedHorizontalZoom(fullDomain);
 
-  const xScale = useMemo(
+  const xScaleObj = useMemo(
     () =>
       scaleLinear<number>({
         domain: [zoom.xMin, zoom.xMax],
@@ -485,6 +492,8 @@ function InnerDigitalChart({
       }),
     [zoom.xMin, zoom.xMax, chartWidth],
   );
+
+  const xScale = useCallback((v: number) => xScaleObj(v), [xScaleObj]);
 
   // --- Vertical scroll: label panel is the source of truth ---
   const labelRef = useRef<HTMLDivElement | null>(null);
@@ -506,11 +515,20 @@ function InnerDigitalChart({
 
   // --- Drag → horizontal pan ---
   const zoomRef = useRef(zoom);
-  zoomRef.current = zoom;
   const chartWidthRef = useRef(chartWidth);
-  chartWidthRef.current = chartWidth;
   const panToRef = useRef(panTo);
-  panToRef.current = panTo;
+
+  useEffect(() => {
+    zoomRef.current = zoom;
+  }, [zoom]);
+
+  useEffect(() => {
+    chartWidthRef.current = chartWidth;
+  }, [chartWidth]);
+
+  useEffect(() => {
+    panToRef.current = panTo;
+  }, [panTo]);
 
   const onMouseDown = useCallback(
     (e: MouseEvent) => {
@@ -571,6 +589,7 @@ function InnerDigitalChart({
         chartWidth={chartWidth}
         chartHeight={height}
         xScale={xScale}
+        xScaleObj={xScaleObj}
         zoom={zoom}
         onZoomWheel={onZoomWheel}
         onMouseDown={onMouseDown}
